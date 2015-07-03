@@ -46,8 +46,8 @@ class Timer {
         $benchmark['stop_time'] = microtime(true);
         $benchmark['avg_time']  = $benchmark['stop_time'] - $benchmark['start_time'];
         $benchmark['stop_memory']   = memory_get_usage(true);
-        $benchmark['avg_memory']    = $benchmark['stop_memory'] - $benchmark['start_memory'];
-        $benchmark['peak_memory']   = memory_get_peak_usage(true);
+        $benchmark['avg_memory']    = ( ($benchmark['stop_memory'] - $benchmark['start_memory']) / 1024 ) / 1024;
+        $benchmark['peak_memory']   = memory_get_peak_usage(true) / 1024 / 1024;
         $benchmark['running']       = false;
 
         $this->benchmarks[$key] = $benchmark;
@@ -99,11 +99,11 @@ class Timer {
 
         $benchmark = $this->get($key);
 
-        return sprintf('[%s] %s seconds, %s memory (%s peak)',
+        return sprintf('[%s] %s seconds, %sMB memory (%sMB peak)',
                 $key,
                 number_format($benchmark['avg_time'], 4),
-                $benchmark['avg_memory'],
-                $benchmark['peak_memory']
+                number_format($benchmark['avg_memory'], 2),
+                number_format($benchmark['peak_memory'], 2)
             );
     }
     

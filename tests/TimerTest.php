@@ -88,12 +88,12 @@ class TimerTest extends PHPUnit_Framework_TestCase {
         $timer->stop('test');
 
         $t = $timer->get('test');
-
-        $expected = sprintf('[%s] %s seconds, %s memory (%s peak)',
+var_dump($timer->output('test'));
+        $expected = sprintf('[%s] %s seconds, %sMB memory (%sMB peak)',
             'test',
             number_format($t['avg_time'], 4),
-            $t['avg_memory'],
-            $t['peak_memory']
+            number_format($t['avg_memory'], 2),
+            number_format($t['peak_memory'], 2)
         );
 
         $this->assertEquals($expected, $timer->output('test'));
